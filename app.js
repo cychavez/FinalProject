@@ -13,9 +13,9 @@ app.use(cookieParser())
 
 app.use(express.static(path.join(__dirname, 'public')))
 
-import api from './routes/api/v1'
-
-app.use('/api/v1', api)
+// Routes
+import routes from './routes'
+routes.init(app)
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

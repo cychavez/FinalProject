@@ -31,7 +31,7 @@ router.get('/:resource/:id', (req, res) => {
       return res.status(500).send({ error })
     }
 
-    res.json({ rows, fields })
+    res.json(rows)
   })
 })
 
@@ -58,7 +58,7 @@ router.put('/:resource/:id', (req, res) => {
       return res.status(500).send({ error })
     }
 
-    res.json({ rows })
+    res.json(rows)
   })
 })
 

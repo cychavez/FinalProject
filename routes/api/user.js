@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
       return res.status(500).send({ error })
     }
 
-    res.json({ rows, fields })
+    res.json(rows)
   })
 })
 

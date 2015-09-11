@@ -11,6 +11,7 @@ import db from '../../lib/db'
 const router = express.Router()
 
 router.get('/:resource', (req, res) => {
+  debug(`GET ${req.path}`)
   const resource = dotty.get(req, 'params.resource')
 
   db.selectFile(resource, (error, rows, fields) => {
@@ -23,6 +24,7 @@ router.get('/:resource', (req, res) => {
 })
 
 router.get('/:resource/:id', (req, res) => {
+  debug(`GET ${req.path}`)
   const resource = dotty.get(req, 'params.resource')
   const id = dotty.get(req, 'params.id')
 
@@ -36,6 +38,7 @@ router.get('/:resource/:id', (req, res) => {
 })
 
 router.post('/:resource', (req, res) => {
+  debug(`POST ${req.path}`, req.body)
   const resource = dotty.get(req, 'params.resource')
   const payload = dotty.get(req, 'body')
 
@@ -49,6 +52,7 @@ router.post('/:resource', (req, res) => {
 })
 
 router.put('/:resource/:id', (req, res) => {
+  debug(`PUT ${req.path}`, req.body)
   const resource = dotty.get(req, 'params.resource')
   const id = dotty.get(req, 'params.id')
   const payload = dotty.get(req, 'body')
@@ -63,6 +67,7 @@ router.put('/:resource/:id', (req, res) => {
 })
 
 router.delete('/:resource/:id', (req, res) => {
+  debug(`DELETE ${req.path}`)
   const resource = dotty.get(req, 'params.resource')
   const id = dotty.get(req, 'params.id')
 

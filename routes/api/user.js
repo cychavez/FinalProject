@@ -10,6 +10,7 @@ import express from 'express'
 const router = express.Router()
 
 import snakeProps from '../../lib/snake-props'
+import camelProps from '../../lib/camel-props'
 
 // List all users
 router.get('/', (req, res) => {
@@ -21,7 +22,7 @@ router.get('/', (req, res) => {
       return res.status(500).send({ error })
     }
 
-    res.json(rows)
+    res.json(rows.map(camelProps))
   })
 })
 
@@ -36,7 +37,7 @@ router.get('/:id', (req, res) => {
       return res.status(500).send({ error })
     }
 
-    res.json(rows)
+    res.json(rows.map(camelProps))
   })
 })
 

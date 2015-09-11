@@ -7,6 +7,7 @@ import dotty from 'dotty'
 import express from 'express'
 
 import db from '../../lib/db'
+import camelProps from '../../lib/camel-props'
 
 const router = express.Router()
 
@@ -19,7 +20,7 @@ router.get('/:resource', (req, res) => {
       return res.status(500).send({ error })
     }
 
-    res.json(rows)
+    res.json(rows.map(camelProps))
   })
 })
 
@@ -33,7 +34,7 @@ router.get('/:resource/:id', (req, res) => {
       return res.status(500).send({ error })
     }
 
-    res.json(rows)
+    res.json(rows.map(camelProps))
   })
 })
 

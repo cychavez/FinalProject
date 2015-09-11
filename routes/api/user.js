@@ -13,8 +13,11 @@ import snakeProps from '../../lib/snake-props'
 
 // List all users
 router.get('/', (req, res) => {
+  debug(`GET ${req.path}`)
+
   db.selectFile('all-users', (error, rows, fields) => {
     if (error) {
+      debug('DB Error', error)
       return res.status(500).send({ error })
     }
 
@@ -24,10 +27,12 @@ router.get('/', (req, res) => {
 
 // Create a user
 router.post('/', (req, res) => {
+  debug(`POST ${req.path}`, req.body)
   const values = snakeProps(req.body)
 
   db.insert('user', values, (error, id) => {
     if (error) {
+      debug('DB Error', error)
       return res.status(500).send({ error })
     }
 
@@ -38,10 +43,12 @@ router.post('/', (req, res) => {
 
 // Get user by ID
 router.get('/:id', (req, res) => {
+  debug(`GET ${req.path}`)
   const id = req.params.id
 
   db.selectFile('get-user', { id }, (error, rows) => {
     if (error) {
+      debug('DB Error', error)
       return res.status(500).send({ error })
     }
 

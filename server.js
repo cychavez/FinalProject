@@ -4,7 +4,7 @@ import app from './app'
 import http from 'http'
 import bug from 'debug'
 
-const debug = bug('express-server:server')
+const debug = bug('rockit-express:server')
 
 // Get port from environment and store in Express.
 

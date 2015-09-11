@@ -1,5 +1,5 @@
 import bug from 'debug'
-const debug = bug('express-server:routes')
+const debug = bug('rockit-express:routes')
 
 import requireDir from 'require-dir'
 const routes = requireDir('./api', { recurse: true });

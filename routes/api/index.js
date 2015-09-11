@@ -1,5 +1,5 @@
 import bug from 'debug'
-const debug = bug('express-server:api')
+const debug = bug('rockit-express:api')
 
 import path from 'path'
 import assign from 'lodash/object/assign'

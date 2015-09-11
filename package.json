@@ -1,11 +1,11 @@
 {
-  "name": "express-server",
+  "name": "rockit-express",
   "version": "0.0.0",
   "description": "",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "DEBUG=express-server:* nodemon --exec babel-node server.js"
+    "start": "DEBUG=rockit-express:* nodemon --exec babel-node server.js"
   },
   "author": "Kevin Lanni <therealklanni@gmail.com> (https://github.com/therealklanni)",
   "license": "MIT",

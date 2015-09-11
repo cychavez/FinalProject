@@ -1,6 +1,6 @@
 // Debugging
 import bug from 'debug'
-const debug = bug('express-server:api:user')
+const debug = bug('rockit-express:api:user')
 
 // Database
 import db from '../../lib/db'

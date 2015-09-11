@@ -72,6 +72,7 @@ router.delete('/:resource/:id', (req, res) => {
   const id = dotty.get(req, 'params.id')
 
   debug('mysql-chassis doesn\'t support delete')
+  res.sendStatus(501)
 })
 
 export default router

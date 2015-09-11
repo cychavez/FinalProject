@@ -10,12 +10,12 @@ app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
-
 app.use(express.static(path.join(__dirname, 'public')))
 
 // Routes
 import routes from './routes'
-routes.init(app)
+import defaultApi from './routes/api'
+app.use('/api', routes, defaultApi)
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

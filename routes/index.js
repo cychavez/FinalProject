@@ -1,12 +1,18 @@
-import requireDir from 'require-dir'
-var routes = requireDir('./api', { recurse: true });
+import bug from 'debug'
+const debug = bug('express-server:routes')
 
-export default {
-  init: function(app) {
-    for (var i in routes) {
-      if (routes[i].init) {
-        routes[i].init(app) 
-      }
-    }
+import requireDir from 'require-dir'
+const routes = requireDir('./api', { recurse: true });
+
+debug('routes', routes)
+
+import express from 'express'
+const router = express.Router()
+
+for (let route in routes) {
+  if (route !== 'index') {
+    router.use(`/${route}`, routes[route])
   }
 }
+
+export default router

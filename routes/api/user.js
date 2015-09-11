@@ -1,6 +1,6 @@
-// Misc
+// Debugging
 import bug from 'debug'
-const debug = bug('express-server:api')
+const debug = bug('express-server:api:user')
 
 // Database
 import db from '../../lib/db'
@@ -15,15 +15,16 @@ router.get('/', (req, res) => {
     if (error) {
       return res.status(500).send({ error })
     }
-    res.json(rows)
+
+    res.json({ rows, fields })
   })
 })
 
 // Create a user
 router.post('/', (req, res) => {
   const params = req.body
+  const values = {}
 
-  var values = {}
   values.first_name = params.firstName
   values.last_name = params.lastName
   values.email = params.email
@@ -32,24 +33,23 @@ router.post('/', (req, res) => {
     if (error) {
       return res.status(500).send({ error })
     }
-    res.json({id: id})
+
+    res.json({ id })
   })
 
 })
 
-// Get one user
+// Get user by ID
 router.get('/:id', (req, res) => {
-  var id = req.params.id
+  const id = req.params.id
+
   db.selectFile('get-user', { id }, (error, rows) => {
     if (error) {
       return res.status(500).send({ error })
     }
+
     res.json(rows)
   })
 })
 
-export default {
-  init: function(app) {
-    app.use('/api/users', router)
-  }
-}
+export default router

@@ -25,6 +25,21 @@ router.get('/', (req, res) => {
   })
 })
 
+// Get user by ID
+router.get('/:id', (req, res) => {
+  debug(`GET ${req.path}`)
+  const id = req.params.id
+
+  db.selectFile('get-user', { id }, (error, rows) => {
+    if (error) {
+      debug('DB Error', error)
+      return res.status(500).send({ error })
+    }
+
+    res.json(rows)
+  })
+})
+
 // Create a user
 router.post('/', (req, res) => {
   debug(`POST ${req.path}`, req.body)
@@ -39,21 +54,6 @@ router.post('/', (req, res) => {
     res.json({ id })
   })
 
-})
-
-// Get user by ID
-router.get('/:id', (req, res) => {
-  debug(`GET ${req.path}`)
-  const id = req.params.id
-
-  db.selectFile('get-user', { id }, (error, rows) => {
-    if (error) {
-      debug('DB Error', error)
-      return res.status(500).send({ error })
-    }
-
-    res.json(rows)
-  })
 })
 
 export default router

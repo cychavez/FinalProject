@@ -48,7 +48,9 @@ router.post('/:resource', (req, res) => {
       return res.status(500).send({ error })
     }
 
-    res.json({ id })
+    const uri = `${req.originalUrl}/${id}`
+
+    res.location(uri).status(201).send(uri)
   })
 })
 
@@ -58,12 +60,12 @@ router.put('/:resource/:id', (req, res) => {
   const id = dotty.get(req, 'params.id')
   const payload = dotty.get(req, 'body')
 
-  db.update(resource, payload, { [`${resource}_id`]: id }, (error, rows) => {
+  db.update(resource, payload, { [`${resource}_id`]: id }, error => {
     if (error) {
       return res.status(500).send({ error })
     }
 
-    res.json(rows)
+    res.location(req.originalUrl).sendStatus(200)
   })
 })
 

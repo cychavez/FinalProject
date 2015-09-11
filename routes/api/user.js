@@ -52,7 +52,9 @@ router.post('/', (req, res) => {
       return res.status(500).send({ error })
     }
 
-    res.json({ id })
+    const uri = `${req.originalUrl}/${id}`
+
+    res.location(uri).status(201).send(uri)
   })
 
 })

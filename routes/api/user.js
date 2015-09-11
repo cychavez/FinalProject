@@ -9,6 +9,8 @@ import db from '../../lib/db'
 import express from 'express'
 const router = express.Router()
 
+import snakeProps from '../../lib/snake-props'
+
 // List all users
 router.get('/', (req, res) => {
   db.selectFile('all-users', (error, rows, fields) => {
@@ -22,12 +24,7 @@ router.get('/', (req, res) => {
 
 // Create a user
 router.post('/', (req, res) => {
-  const params = req.body
-  const values = {}
-
-  values.first_name = params.firstName
-  values.last_name = params.lastName
-  values.email = params.email
+  const values = snakeProps(req.body)
 
   db.insert('user', values, (error, id) => {
     if (error) {

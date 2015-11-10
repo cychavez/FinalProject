@@ -1,2 +1,3 @@
 SELECT *
-FROM comments
+FROM comment
+WHERE user_id = :id

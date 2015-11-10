@@ -1,62 +1,68 @@
 // Debugging
-import bug from 'debug'
-const debug = bug('rockit-express:api:user')
+var bug = require('debug')
+var debug = bug('rockit-express:api:user')
 
 // Database
-import db from '../../lib/db'
+var db = require('../../lib/db')
 
 // Router
-import express from 'express'
-const router = express.Router()
+var express = require('express')
+var router = express.Router()
 
-import snakeProps from '../../lib/snake-props'
-import camelProps from '../../lib/camel-props'
+// Utilities for case
+var snakeProps = require('../../lib/snake-props')
+var camelProps = require('../../lib/camel-props')
 
 // List all users
-router.get('/', (req, res) => {
-  debug(`GET ${req.path}`)
+router.get('/', function(req, res) {
+  //debug('GET' + req.path)
 
-  db.selectFile('all-users', (error, rows, fields) => {
+  db.selectFile('all-users', function(error, rows, fields) {
     if (error) {
       debug('DB Error', error)
       return res.status(500).send({ error })
     }
 
-    res.json(rows.map(camelProps))
+    //res.json(rows.map(camelProps))
+    res.json(rows)
   })
 })
 
 // Get user by ID
-router.get('/:id', (req, res) => {
-  debug(`GET ${req.path}`)
-  const id = req.params.id
+router.get('/:id', function(req, res) {
+  //debug('GET' + req.path)
+  var id = req.params.id
 
-  db.selectFile('get-user', { id }, (error, rows) => {
+  db.selectFile('get-user', {id: id}, function(error, rows) {
     if (error) {
       debug('DB Error', error)
       return res.status(500).send({ error })
     }
 
-    res.json(rows.map(camelProps))
+    //res.json(rows.map(camelProps))
+    res.json(rows)
   })
 })
 
 // Create a user
-router.post('/', (req, res) => {
-  debug(`POST ${req.path}`, req.body)
-  const values = snakeProps(req.body)
+router.post('/', function(req, res) {
+  //debug('POST' +  req.path + ',' + req.body)
+  var values = snakeProps(req.body)
 
-  db.insert('user', values, (error, id) => {
+  db.insert('user', values, function(error, id) {
     if (error) {
       debug('DB Error', error)
       return res.status(500).send({ error })
     }
 
-    const uri = `${req.originalUrl}/${id}`
+    // Make a URL string
+    var uri = req.originalUrl + '/' + id;
 
+    // Redirect
     res.location(uri).status(201).send(uri)
+
   })
 
 })
 
-export default router
+module.exports = router

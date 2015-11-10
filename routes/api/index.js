@@ -14,10 +14,11 @@ const router = express.Router()
 router.get('/:resource', (req, res) => {
   debug(`GET ${req.path}`)
   const resource = dotty.get(req, 'params.resource')
+  const sql = `SELECT * FROM ${resource}`
 
-  db.selectFile(resource, (error, rows, fields) => {
+  db.select(sql, (error, rows, fields) => {
     if (error) {
-      return res.status(500).send({ error })
+      return res.status(500).send({ error, sql })
     }
 
     res.json(rows.map(camelProps))
@@ -28,10 +29,11 @@ router.get('/:resource/:id', (req, res) => {
   debug(`GET ${req.path}`)
   const resource = dotty.get(req, 'params.resource')
   const id = dotty.get(req, 'params.id')
+  const sql = `SELECT * FROM ${resource} WHERE ${resource}_id = :id`
 
-  db.selectFile(resource, { id }, (error, rows, fields) => {
+  db.select(sql, { id }, (error, rows, fields) => {
     if (error) {
-      return res.status(500).send({ error })
+      return res.status(500).send({ error, sql })
     }
 
     res.json(rows.map(camelProps))

@@ -40,6 +40,22 @@ router.get('/:entity/:id', (req, res) => {
   })
 })
 
+router.get('/:entity/:id/:subEntity', (req, res) => {
+  debug(`GET ${req.path}`)
+  const entity = dotty.get(req, 'params.entity')
+  const subEntity = dotty.get(req, 'params.subEntity')
+  const id = dotty.get(req, 'params.id')
+  const sql = `SELECT * FROM ${subEntity} WHERE ${entity}_id = :id`
+
+  db.select(sql, { id }, (error, rows, fields) => {
+    if (error) {
+      return res.status(500).send({ error, sql })
+    }
+
+    res.json(rows.map(camelProps))
+  })
+})
+
 router.post('/:entity', (req, res) => {
   debug(`POST ${req.path}`, req.body)
   const entity = dotty.get(req, 'params.entity')

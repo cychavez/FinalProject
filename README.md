@@ -66,7 +66,7 @@ The example above would give you all **comments** related to **post** with the I
 
 Custom endpoints require creating a JavaScript file in the `routes/api` directory. See the provided `routes/api/user.js` for example code.
 
-> If you create a custom route script, this will **completely** override any automatic endpoints, even if you don't create an endpoint for each HTTP method for that table. If you want each HTTP method to be supported you must fully implement each yourself.
+> If you create a custom route script, this will **only** override automatic endpoints for the specific HTTP method created. All methods not explicitly created as a custom endpoint will fallback to being handled by the automatic endpoints.
 
 In order to get the data from your MySQL tables, you will create a `.sql` file with the necessary SQL statement and save that to the `sql` directory. You can name the file anything you like. You use the `selectFile` method to load the file as your SQL statement.
 

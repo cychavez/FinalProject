@@ -11,10 +11,10 @@ import camelProps from '../../lib/camel-props'
 
 const router = express.Router()
 
-router.get('/:resource', (req, res) => {
+router.get('/:entity', (req, res) => {
   debug(`GET ${req.path}`)
-  const resource = dotty.get(req, 'params.resource')
-  const sql = `SELECT * FROM ${resource}`
+  const entity = dotty.get(req, 'params.entity')
+  const sql = `SELECT * FROM ${entity}`
 
   db.select(sql, (error, rows, fields) => {
     if (error) {
@@ -25,11 +25,11 @@ router.get('/:resource', (req, res) => {
   })
 })
 
-router.get('/:resource/:id', (req, res) => {
+router.get('/:entity/:id', (req, res) => {
   debug(`GET ${req.path}`)
-  const resource = dotty.get(req, 'params.resource')
+  const entity = dotty.get(req, 'params.entity')
   const id = dotty.get(req, 'params.id')
-  const sql = `SELECT * FROM ${resource} WHERE ${resource}_id = :id`
+  const sql = `SELECT * FROM ${entity} WHERE ${entity}_id = :id`
 
   db.select(sql, { id }, (error, rows, fields) => {
     if (error) {
@@ -40,12 +40,28 @@ router.get('/:resource/:id', (req, res) => {
   })
 })
 
-router.post('/:resource', (req, res) => {
+router.get('/:entity/:id/:subEntity', (req, res) => {
+  debug(`GET ${req.path}`)
+  const entity = dotty.get(req, 'params.entity')
+  const subEntity = dotty.get(req, 'params.subEntity')
+  const id = dotty.get(req, 'params.id')
+  const sql = `SELECT * FROM ${subEntity} WHERE ${entity}_id = :id`
+
+  db.select(sql, { id }, (error, rows, fields) => {
+    if (error) {
+      return res.status(500).send({ error, sql })
+    }
+
+    res.json(rows.map(camelProps))
+  })
+})
+
+router.post('/:entity', (req, res) => {
   debug(`POST ${req.path}`, req.body)
-  const resource = dotty.get(req, 'params.resource')
+  const entity = dotty.get(req, 'params.entity')
   const payload = dotty.get(req, 'body')
 
-  db.insert(resource, payload, (error, id) => {
+  db.insert(entity, payload, (error, id) => {
     if (error) {
       return res.status(500).send({ error })
     }
@@ -56,13 +72,13 @@ router.post('/:resource', (req, res) => {
   })
 })
 
-router.put('/:resource/:id', (req, res) => {
+router.put('/:entity/:id', (req, res) => {
   debug(`PUT ${req.path}`, req.body)
-  const resource = dotty.get(req, 'params.resource')
+  const entity = dotty.get(req, 'params.entity')
   const id = dotty.get(req, 'params.id')
   const payload = dotty.get(req, 'body')
 
-  db.update(resource, payload, { [`${resource}_id`]: id }, error => {
+  db.update(entity, payload, { [`${entity}_id`]: id }, error => {
     if (error) {
       return res.status(500).send({ error })
     }
@@ -71,9 +87,9 @@ router.put('/:resource/:id', (req, res) => {
   })
 })
 
-router.delete('/:resource/:id', (req, res) => {
+router.delete('/:entity/:id', (req, res) => {
   debug(`DELETE ${req.path}`)
-  const resource = dotty.get(req, 'params.resource')
+  const entity = dotty.get(req, 'params.entity')
   const id = dotty.get(req, 'params.id')
 
   debug('mysql-chassis doesn\'t support delete')

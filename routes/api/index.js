@@ -7,7 +7,7 @@ import dotty from 'dotty'
 import express from 'express'
 
 import db from '../../lib/db'
-import camelProps from '../../lib/camel-props'
+import changeCase from '../../lib/change-case'
 
 const router = express.Router()
 
@@ -21,7 +21,7 @@ router.get('/:entity', (req, res) => {
       return res.status(500).send({ error, sql })
     }
 
-    res.json(rows.map(camelProps))
+    res.json(rows.map(changeCase))
   })
 })
 
@@ -36,7 +36,7 @@ router.get('/:entity/:id', (req, res) => {
       return res.status(500).send({ error, sql })
     }
 
-    res.json(rows.map(camelProps))
+    res.json(rows.map(changeCase))
   })
 })
 
@@ -52,7 +52,7 @@ router.get('/:entity/:id/:subEntity', (req, res) => {
       return res.status(500).send({ error, sql })
     }
 
-    res.json(rows.map(camelProps))
+    res.json(rows.map(changeCase))
   })
 })
 
@@ -61,7 +61,7 @@ router.post('/:entity', (req, res) => {
   const entity = dotty.get(req, 'params.entity')
   const payload = dotty.get(req, 'body')
 
-  db.insert(entity, payload, (error, id) => {
+  db.insert(entity, changeCase(payload), (error, id) => {
     if (error) {
       return res.status(500).send({ error })
     }
@@ -78,7 +78,7 @@ router.put('/:entity/:id', (req, res) => {
   const id = dotty.get(req, 'params.id')
   const payload = dotty.get(req, 'body')
 
-  db.update(entity, payload, { [`${entity}_id`]: id }, error => {
+  db.update(entity, changeCase(payload), { [`${entity}_id`]: id }, error => {
     if (error) {
       return res.status(500).send({ error })
     }
@@ -92,7 +92,7 @@ router.delete('/:entity/:id', (req, res) => {
   const entity = dotty.get(req, 'params.entity')
   const id = dotty.get(req, 'params.id')
 
-  debug('mysql-chassis doesn\'t support delete')
+  debug('mysql-chassis does not support delete')
   res.sendStatus(501)
 })
 

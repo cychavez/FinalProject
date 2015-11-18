@@ -9,9 +9,8 @@ var db = require('../../lib/db')
 var express = require('express')
 var router = express.Router()
 
-// Utilities for case
-var snakeProps = require('../../lib/snake-props')
-var camelProps = require('../../lib/camel-props')
+// Utility for changing case
+var changeCase = require('../../lib/change-case')
 
 // List all users
 router.get('/', function(req, res) {
@@ -23,8 +22,7 @@ router.get('/', function(req, res) {
       return res.status(500).send({ error })
     }
 
-    //res.json(rows.map(camelProps))
-    res.json(rows)
+    res.json(rows.map(changeCase))
   })
 })
 
@@ -39,8 +37,7 @@ router.get('/:id', function(req, res) {
       return res.status(500).send({ error })
     }
 
-    //res.json(rows.map(camelProps))
-    res.json(rows)
+    res.json(rows.map(changeCase))
   })
 })
 

@@ -17,6 +17,7 @@
     "debug": "^2.2.0",
     "dotty": "0.0.2",
     "express": "^4.13.3",
+    "express-session": "^1.12.1",
     "lodash": "^3.10.1",
     "morgan": "^1.6.1",
     "multer": "^1.1.0",

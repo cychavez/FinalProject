@@ -3,6 +3,7 @@ import logger from 'morgan'
 import express from 'express'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
+import session from 'express-session'
 
 const app = express()
 
@@ -11,6 +12,12 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
+
+app.use(session({
+  secret: 'rockit',
+  resave: false,
+  saveUninitialized: false
+}))
 
 // Routes
 import routes from './routes'

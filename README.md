@@ -25,11 +25,40 @@ You should see output similar to the following:
 
 A `config.json` is provided for configuring the server.
 
-### autocase
+### `autocase`
 
 Column names in a table generally use snake_case and will be converted to camelCase as the property name in the JSON and vice versa.
 
 Set this option to `false` to disable automatic conversion between snake_case and camelCase.
+
+### `uploadField`
+
+The field name you'll use for `multipart/file-data` POST requests (i.e. file uploads).
+
+Code example (create a file in `routes/api`, whatever you name that JS file will be the name of the endpoint, e.g. `routes/api/upload.js`→`/api/upload`):
+
+```js
+// require config file
+var config = require('../../lib/config').json
+
+// require multer
+var upload = multer({ dest: './public/files' })
+
+// ...
+
+// configure file upload endpoint on your router
+router.post('/', upload.array(config.uploadField, 8), (req, res) => {
+  // handle uploaded files here ...
+
+
+  // required for response
+  // put this in a successful callback after e.g. renaming the file(s)
+  var filePaths = req.files.map(function (file) {
+    return file.path + '_' + file.originalname
+  }).join(' /')
+  res.location('/' + filePaths).sendStatus(201)
+})
+```
 
 ## API
 
